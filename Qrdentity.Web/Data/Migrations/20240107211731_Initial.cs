@@ -18,10 +18,10 @@ namespace Qrdentity.Web.Data.Migrations
                 name: "utility");
 
             migrationBuilder.EnsureSchema(
-                name: "product");
+                name: "public");
 
             migrationBuilder.EnsureSchema(
-                name: "public");
+                name: "product");
 
             migrationBuilder.CreateTable(
                 name: "BusinessTypes",
@@ -31,7 +31,7 @@ namespace Qrdentity.Web.Data.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "varchar(100)", nullable: false),
                     Descriptions = table.Column<string>(type: "json", nullable: false),
-                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2024, 1, 7, 0, 27, 35, 715, DateTimeKind.Unspecified).AddTicks(1580), new TimeSpan(0, 0, 0, 0, 0))),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
                     ModifiedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     UpdatedBy = table.Column<Guid>(type: "uuid", nullable: true),
@@ -51,7 +51,7 @@ namespace Qrdentity.Web.Data.Migrations
                     Name = table.Column<string>(type: "varchar(100)", nullable: false),
                     CountryCode = table.Column<string>(type: "text", nullable: false),
                     SortOrder = table.Column<int>(type: "integer", nullable: false),
-                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2024, 1, 7, 0, 27, 35, 715, DateTimeKind.Unspecified).AddTicks(9100), new TimeSpan(0, 0, 0, 0, 0))),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
                     ModifiedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     UpdatedBy = table.Column<Guid>(type: "uuid", nullable: true),
@@ -60,6 +60,47 @@ namespace Qrdentity.Web.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Countries", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MultiFactorRegistrationHistory",
+                schema: "public",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    UsedMobileNumber = table.Column<string>(type: "char(12)", nullable: true),
+                    UsedEmail = table.Column<string>(type: "varchar(50)", nullable: true),
+                    UserProvidedCode = table.Column<string>(type: "char(6)", nullable: false),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MultiFactorRegistrationHistory", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MultiFactorRegistrations",
+                schema: "public",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    MobileNumberToSendCode = table.Column<string>(type: "char(12)", nullable: true),
+                    EmailToSendCode = table.Column<string>(type: "varchar(50)", nullable: true),
+                    CodeToAuthenticate = table.Column<string>(type: "char(6)", nullable: false),
+                    IsAuthenticated = table.Column<bool>(type: "boolean", nullable: false),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
+                    ModifiedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    UpdatedBy = table.Column<Guid>(type: "uuid", nullable: true),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MultiFactorRegistrations", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -73,7 +114,7 @@ namespace Qrdentity.Web.Data.Migrations
                     SalePriceWithoutVatApplied = table.Column<decimal>(type: "numeric", nullable: false),
                     Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
                     Descriptions = table.Column<string>(type: "text", maxLength: 1000, nullable: false),
-                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2024, 1, 7, 0, 27, 35, 715, DateTimeKind.Unspecified).AddTicks(7720), new TimeSpan(0, 0, 0, 0, 0))),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
                     ModifiedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     UpdatedBy = table.Column<Guid>(type: "uuid", nullable: true),
@@ -92,7 +133,7 @@ namespace Qrdentity.Web.Data.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     IsShoppingDone = table.Column<bool>(type: "boolean", nullable: false),
-                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2024, 1, 7, 0, 27, 35, 715, DateTimeKind.Unspecified).AddTicks(6410), new TimeSpan(0, 0, 0, 0, 0))),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
                     ModifiedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     UpdatedBy = table.Column<Guid>(type: "uuid", nullable: true),
@@ -113,7 +154,7 @@ namespace Qrdentity.Web.Data.Migrations
                     OfficeName = table.Column<string>(type: "varchar(100)", nullable: false),
                     SortOrder = table.Column<int>(type: "integer", nullable: false),
                     PlateNumber = table.Column<string>(type: "varchar(2)", nullable: false),
-                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2024, 1, 7, 0, 27, 35, 716, DateTimeKind.Unspecified).AddTicks(90), new TimeSpan(0, 0, 0, 0, 0))),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
                     ModifiedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     UpdatedBy = table.Column<Guid>(type: "uuid", nullable: true),
@@ -133,7 +174,7 @@ namespace Qrdentity.Web.Data.Migrations
                     Name = table.Column<string>(type: "varchar(100)", nullable: false),
                     Descriptions = table.Column<string>(type: "json", nullable: false),
                     BusinessTypeId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2024, 1, 7, 0, 27, 35, 715, DateTimeKind.Unspecified).AddTicks(390), new TimeSpan(0, 0, 0, 0, 0))),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
                     ModifiedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     UpdatedBy = table.Column<Guid>(type: "uuid", nullable: true),
@@ -160,7 +201,7 @@ namespace Qrdentity.Web.Data.Migrations
                     CountryId = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "varchar(100)", nullable: false),
                     PlateNumber = table.Column<string>(type: "text", nullable: false),
-                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2024, 1, 7, 0, 27, 35, 715, DateTimeKind.Unspecified).AddTicks(8390), new TimeSpan(0, 0, 0, 0, 0))),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
                     ModifiedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     UpdatedBy = table.Column<Guid>(type: "uuid", nullable: true),
@@ -190,7 +231,7 @@ namespace Qrdentity.Web.Data.Migrations
                     Quantity = table.Column<int>(type: "integer", nullable: false),
                     ListPriceWithoutVatApplied = table.Column<decimal>(type: "numeric", nullable: false),
                     SalePriceWithoutVatApplied = table.Column<decimal>(type: "numeric", nullable: false),
-                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2024, 1, 7, 0, 27, 35, 715, DateTimeKind.Unspecified).AddTicks(7110), new TimeSpan(0, 0, 0, 0, 0))),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
                     ModifiedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     UpdatedBy = table.Column<Guid>(type: "uuid", nullable: true),
@@ -227,7 +268,7 @@ namespace Qrdentity.Web.Data.Migrations
                     EmployeeCount = table.Column<int>(type: "integer", nullable: true),
                     TaxOfficeId = table.Column<Guid>(type: "uuid", nullable: false),
                     TaxNumber = table.Column<string>(type: "varchar(30)", nullable: false),
-                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2024, 1, 7, 0, 27, 35, 715, DateTimeKind.Unspecified).AddTicks(5660), new TimeSpan(0, 0, 0, 0, 0))),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
                     ModifiedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     UpdatedBy = table.Column<Guid>(type: "uuid", nullable: true),
@@ -253,7 +294,7 @@ namespace Qrdentity.Web.Data.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     CityId = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "varchar(100)", nullable: false),
-                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2024, 1, 7, 0, 27, 35, 715, DateTimeKind.Unspecified).AddTicks(9550), new TimeSpan(0, 0, 0, 0, 0))),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
                     ModifiedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     UpdatedBy = table.Column<Guid>(type: "uuid", nullable: true),
@@ -282,7 +323,7 @@ namespace Qrdentity.Web.Data.Migrations
                     Surname = table.Column<string>(type: "varchar(30)", nullable: false),
                     Email = table.Column<string>(type: "varchar(50)", nullable: false),
                     PhoneNumber = table.Column<string>(type: "varchar(20)", nullable: false),
-                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2024, 1, 7, 0, 27, 35, 715, DateTimeKind.Unspecified).AddTicks(2310), new TimeSpan(0, 0, 0, 0, 0))),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
                     ModifiedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     UpdatedBy = table.Column<Guid>(type: "uuid", nullable: true),
@@ -312,7 +353,7 @@ namespace Qrdentity.Web.Data.Migrations
                     FileLength = table.Column<int>(type: "integer", nullable: false),
                     AgreementStartDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     AgreementEndDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2024, 1, 7, 0, 27, 35, 715, DateTimeKind.Unspecified).AddTicks(3690), new TimeSpan(0, 0, 0, 0, 0))),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
                     ModifiedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     UpdatedBy = table.Column<Guid>(type: "uuid", nullable: true),
@@ -338,7 +379,7 @@ namespace Qrdentity.Web.Data.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     OrganizationId = table.Column<Guid>(type: "uuid", nullable: false),
                     BusinessSubTypeId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2024, 1, 7, 0, 27, 35, 715, DateTimeKind.Unspecified).AddTicks(4220), new TimeSpan(0, 0, 0, 0, 0))),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
                     ModifiedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     UpdatedBy = table.Column<Guid>(type: "uuid", nullable: true),
@@ -376,7 +417,7 @@ namespace Qrdentity.Web.Data.Migrations
                     Longitude = table.Column<double>(type: "double precision", nullable: false),
                     Latitude = table.Column<double>(type: "double precision", nullable: false),
                     GoogleMapsLink = table.Column<string>(type: "varchar(500)", nullable: true),
-                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2024, 1, 7, 0, 27, 35, 715, DateTimeKind.Unspecified).AddTicks(2950), new TimeSpan(0, 0, 0, 0, 0))),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
                     ModifiedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     UpdatedBy = table.Column<Guid>(type: "uuid", nullable: true),
@@ -509,6 +550,14 @@ namespace Qrdentity.Web.Data.Migrations
             migrationBuilder.DropTable(
                 name: "Contacts",
                 schema: "b2b");
+
+            migrationBuilder.DropTable(
+                name: "MultiFactorRegistrationHistory",
+                schema: "public");
+
+            migrationBuilder.DropTable(
+                name: "MultiFactorRegistrations",
+                schema: "public");
 
             migrationBuilder.DropTable(
                 name: "OrganizationAddresses",

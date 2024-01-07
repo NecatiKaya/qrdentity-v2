@@ -2,7 +2,9 @@ namespace Qrdentity.Web.Proxies.Common.Mobile;
 
 public sealed class MobileNumberRequest
 {
-    public string Country { get; set; } = "+90";
+    public string CountryCode { get; set; } = "+90";
+
+    public string CountryWithoutPlusSign => CountryCode.Replace("+", string.Empty);
 
     public string AreaCodeWithoutZero { get; set; } = default!;
 
@@ -10,6 +12,6 @@ public sealed class MobileNumberRequest
 
     public override string ToString()
     {
-        return $"{Country}{AreaCodeWithoutZero}{Number}";
+        return $"{CountryWithoutPlusSign}{AreaCodeWithoutZero}{Number}";
     }
 }

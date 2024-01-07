@@ -7,5 +7,5 @@ public sealed class PreRegisterVehicleRequest
 {
     public PlateNumberRequest Plate { get; set; } = default!;
 
-    public MobileNumberRequest MobileNumber { get; set; } = default!;
+    public MobileNumberRequest Mobile { get; set; } = default!;
 }

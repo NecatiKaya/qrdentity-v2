@@ -1,10 +1,10 @@
 namespace Qrdentity.Web.Proxies.Common.Vehicle.PlateNumber;
 
-public class PlateNumberRequest
+public sealed class PlateNumberRequest
 {
     public string CityCode { get; set; } = default!;
 
-    public string MiddleLetters { get; set; } = default!;
+    public string MiddlePart { get; set; } = default!;
 
     public int LastPart { get; set; }
 }
