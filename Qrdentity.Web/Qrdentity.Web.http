@@ -1,0 +1,6 @@
+@Qrdentity.Web_HostAddress = http://localhost:5233
+
+GET {{Qrdentity.Web_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
