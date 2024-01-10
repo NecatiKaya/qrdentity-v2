@@ -12,12 +12,11 @@ internal sealed class MultiFactorRegistrationConfiguration : IEntityTypeConfigur
         builder.ToTable("MultiFactorRegistrations", DataConstants.PublicSchema);
         builder.HasKey(table => table.Id);
 
-        builder.Property(mfr => mfr.UserId).IsRequired();
-        builder.Property(mfr => mfr.IsAuthenticated).IsRequired();
-        builder.Property(mfr => mfr.CodeToAuthenticate).HasColumnType("char(6)").IsRequired();
-        builder.Property(mfr => mfr.MobileNumberToSendCode).HasColumnType("char(12)").IsRequired(false);
-        builder.Property(mfr => mfr.EmailToSendCode).HasColumnType("varchar(50)").IsRequired(false);
-
+        builder.Property(table => table.IsAuthenticated).HasDefaultValue(false).IsRequired();
+        builder.Property(table => table.CodeToAuthenticate).IsRequired().HasColumnType("char(6)");
+        builder.Property(mfr => mfr.MobileNumberToSendCode).HasColumnType("char(12)").IsRequired();
+        builder.Property(mfr => mfr.EmailToSendCode).HasColumnType("varchar(50)").IsRequired();
+        
         TrackableEntityConfiguration.Apply(builder);
     }
 }

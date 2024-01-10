@@ -20,16 +20,14 @@ public sealed class VehicleController : QrdentityControllerBase
         _vehicleService = vehicleService;
         _memoryCache = memoryCache;
     }
-
+    
     [HttpPost]
     [Route("pre-register-vehicle")]
     public async Task<IActionResult> VehiclePreRegistration([FromBody] PreRegisterVehicleRequest proxy,
         CancellationToken token)
     {
         MultiFactorRegistration? registration = await _vehicleService.PreRegisterVehicleAsync(DataConstants.AdminUserId,
-            proxy.Mobile,
-            DataConstants.AdminUserEmail, proxy.Plate,
-            token);
+            proxy.Mobile, DataConstants.AdminUserEmail, proxy.Plate, token);
 
         if (registration == null)
         {
@@ -50,8 +48,7 @@ public sealed class VehicleController : QrdentityControllerBase
         CancellationToken cancellationToken)
     {
         VehicleConfirmRegistrationResponse response = await _vehicleService.ConfirmRegistrationVehicleAsync(
-            DataConstants.AdminUserId, proxy.RegistrationId,
-            proxy.Code, cancellationToken);
+            DataConstants.AdminUserId, proxy.RegistrationId, proxy.Code, cancellationToken);
 
         if (response.IsSuccess)
         {

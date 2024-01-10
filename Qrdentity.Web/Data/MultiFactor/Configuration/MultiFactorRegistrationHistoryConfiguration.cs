@@ -9,7 +9,7 @@ internal sealed class MultiFactorRegistrationHistoryConfiguration : IEntityTypeC
 {
     public void Configure(EntityTypeBuilder<MultiFactorRegistrationHistory> builder)
     {
-        builder.ToTable("MultiFactorRegistrationHistory", DataConstants.PublicSchema);
+        builder.ToTable("MultiFactorRegistrationsHistory", DataConstants.PublicSchema);
         builder.HasKey(table => table.Id);
         
         builder.Property(mfr => mfr.UserId).IsRequired();

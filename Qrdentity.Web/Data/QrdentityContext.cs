@@ -45,6 +45,10 @@ public class QrdentityContext : DbContext
 
     public DbSet<MultiFactorRegistrationHistory> MultiFactorRegistrationHistory { get; set; }
 
+    public DbSet<MultiFactorSetting> MultiFactorSettings { get; set; }
+
+    public DbSet<MultiFactorRegistrationSetting> MultiFactorRegistrationSettings { get; set; }
+
     [SuppressMessage("ReSharper", "ConvertToPrimaryConstructor")]
     public QrdentityContext(DbContextOptions<QrdentityContext> options) : base(options)
     {

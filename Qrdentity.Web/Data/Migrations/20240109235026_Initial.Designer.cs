@@ -12,7 +12,7 @@ using Qrdentity.Web.Data;
 namespace Qrdentity.Web.Data.Migrations
 {
     [DbContext(typeof(QrdentityContext))]
-    [Migration("20240107211731_Initial")]
+    [Migration("20240109235026_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace Qrdentity.Web.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.0")
+                .HasAnnotation("ProductVersion", "8.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -38,7 +38,6 @@ namespace Qrdentity.Web.Data.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("CreatedDate")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Descriptions")
@@ -80,7 +79,6 @@ namespace Qrdentity.Web.Data.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("CreatedDate")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Descriptions")
@@ -121,7 +119,6 @@ namespace Qrdentity.Web.Data.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("CreatedDate")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Email")
@@ -175,7 +172,6 @@ namespace Qrdentity.Web.Data.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("CreatedDate")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int?>("EmployeeCount")
@@ -228,7 +224,6 @@ namespace Qrdentity.Web.Data.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("CreatedDate")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("DistrictId")
@@ -287,7 +282,6 @@ namespace Qrdentity.Web.Data.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("CreatedDate")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("FileExtension")
@@ -335,7 +329,6 @@ namespace Qrdentity.Web.Data.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("CreatedDate")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsActive")
@@ -371,7 +364,6 @@ namespace Qrdentity.Web.Data.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("CreatedDate")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsActive")
@@ -406,7 +398,6 @@ namespace Qrdentity.Web.Data.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("CreatedDate")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsActive")
@@ -461,10 +452,10 @@ namespace Qrdentity.Web.Data.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("CreatedDate")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("EmailToSendCode")
+                        .IsRequired()
                         .HasColumnType("varchar(50)");
 
                     b.Property<bool>("IsActive")
@@ -473,9 +464,12 @@ namespace Qrdentity.Web.Data.Migrations
                         .HasDefaultValue(true);
 
                     b.Property<bool>("IsAuthenticated")
-                        .HasColumnType("boolean");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
                     b.Property<string>("MobileNumberToSendCode")
+                        .IsRequired()
                         .HasColumnType("char(12)");
 
                     b.Property<DateTimeOffset?>("ModifiedDate")
@@ -502,7 +496,6 @@ namespace Qrdentity.Web.Data.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("CreatedDate")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsActive")
@@ -525,7 +518,80 @@ namespace Qrdentity.Web.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MultiFactorRegistrationHistory", "public");
+                    b.ToTable("MultiFactorRegistrationsHistory", "public");
+                });
+
+            modelBuilder.Entity("Qrdentity.Web.Data.MultiFactor.MultiFactorRegistrationSetting", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true);
+
+                    b.Property<DateTimeOffset?>("ModifiedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("MultiFactorConfigurationId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("MultiFactorRegistrationId")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .IsUnicode(true)
+                        .HasColumnType("varchar(30)");
+
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MultiFactorRegistrationSettings", "public");
+                });
+
+            modelBuilder.Entity("Qrdentity.Web.Data.MultiFactor.MultiFactorSetting", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(30)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(30)");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Descriptions")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .IsUnicode(true)
+                        .HasColumnType("varchar(500)");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true);
+
+                    b.Property<DateTimeOffset?>("ModifiedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MultiFactorSettings", "configuration");
                 });
 
             modelBuilder.Entity("Qrdentity.Web.Data.Products.QrProduct", b =>
@@ -538,7 +604,6 @@ namespace Qrdentity.Web.Data.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("CreatedDate")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Descriptions")
@@ -591,7 +656,6 @@ namespace Qrdentity.Web.Data.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("CreatedDate")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsActive")
@@ -638,7 +702,6 @@ namespace Qrdentity.Web.Data.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("CreatedDate")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsActive")
@@ -681,7 +744,6 @@ namespace Qrdentity.Web.Data.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("CreatedDate")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsActive")
@@ -716,7 +778,6 @@ namespace Qrdentity.Web.Data.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("CreatedDate")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("DistrictId")

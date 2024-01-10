@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Qrdentity.Web.Data;
 using Qrdentity.Web.Data.B2B.DataSeed;
+using Qrdentity.Web.Data.MultiFactor.DataSeed;
 using Qrdentity.Web.Data.Products.DataSeed;
 using Qrdentity.Web.Data.Utility.Seed;
 
@@ -34,6 +35,7 @@ public static class QrdentityBootstrapper
             BusinessSubTypeDataSeed businessSubTypeDataSeed = new BusinessSubTypeDataSeed();
             TaxOfficeDataSeed taxOfficeDataSeed = new TaxOfficeDataSeed();
             ProductDataSeed productDataSeed = new ProductDataSeed();
+            MultiFactorConfigurationDataSeed multiFactorConfigurationDataSeed = new MultiFactorConfigurationDataSeed();
 
             await districtDataSeed.RemoveAll(context);
             await cityDataSeed.RemoveAll(context);
@@ -42,6 +44,7 @@ public static class QrdentityBootstrapper
             await businessTypeDataSeed.RemoveAll(context);
             await taxOfficeDataSeed.RemoveAll(context);
             await productDataSeed.RemoveAll(context);
+            await multiFactorConfigurationDataSeed.RemoveAll(context);
 
             await countryDataSeed.SeedCountryData(context);
             await cityDataSeed.SeedCityData(context);
@@ -50,6 +53,7 @@ public static class QrdentityBootstrapper
             await businessSubTypeDataSeed.SeedBusinessSubTypeData(context);
             await taxOfficeDataSeed.SeedTaxOfficeData(context);
             await productDataSeed.SeedProductData(context);
+            await multiFactorConfigurationDataSeed.SeedMultiFactorSettingsData(context);
         }
     }
 }

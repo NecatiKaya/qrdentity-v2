@@ -10,7 +10,7 @@ public sealed class MultiFactorRegistration : ITrackableEntity
     public Guid Id { get; set; } = Guid.NewGuid();
 
     public Guid UserId { get; set; }
-
+    
     public string? MobileNumberToSendCode { get; set; }
 
     public string? EmailToSendCode { get; set; }

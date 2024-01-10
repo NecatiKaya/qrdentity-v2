@@ -33,4 +33,14 @@ public static class DataConstants
     public static readonly string ProductSchema = "product";
 
     public static readonly string PublicSchema = "public";
+
+    public static readonly string SmsNotificationCode = "sms-notification";
+
+    public static readonly string EmailNotificationCode = "email-notification";
+
+    public static readonly string WhatsAppNotificationCode = "whatsapp-notification";
+
+    public static readonly string DirectCallNotification = "direct-call";
+    
+    public static readonly string ConfigurationSchema = "configuration";
 }

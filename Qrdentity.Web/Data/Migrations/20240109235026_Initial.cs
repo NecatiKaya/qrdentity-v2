@@ -21,6 +21,9 @@ namespace Qrdentity.Web.Data.Migrations
                 name: "public");
 
             migrationBuilder.EnsureSchema(
+                name: "configuration");
+
+            migrationBuilder.EnsureSchema(
                 name: "product");
 
             migrationBuilder.CreateTable(
@@ -63,7 +66,48 @@ namespace Qrdentity.Web.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "MultiFactorRegistrationHistory",
+                name: "MultiFactorRegistrations",
+                schema: "public",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    MobileNumberToSendCode = table.Column<string>(type: "char(12)", nullable: false),
+                    EmailToSendCode = table.Column<string>(type: "varchar(50)", nullable: false),
+                    CodeToAuthenticate = table.Column<string>(type: "char(6)", nullable: false),
+                    IsAuthenticated = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
+                    ModifiedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    UpdatedBy = table.Column<Guid>(type: "uuid", nullable: true),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MultiFactorRegistrations", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MultiFactorRegistrationSettings",
+                schema: "public",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    MultiFactorRegistrationId = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: false),
+                    MultiFactorConfigurationId = table.Column<string>(type: "text", nullable: false),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
+                    ModifiedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    UpdatedBy = table.Column<Guid>(type: "uuid", nullable: true),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MultiFactorRegistrationSettings", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MultiFactorRegistrationsHistory",
                 schema: "public",
                 columns: table => new
                 {
@@ -78,20 +122,16 @@ namespace Qrdentity.Web.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MultiFactorRegistrationHistory", x => x.Id);
+                    table.PrimaryKey("PK_MultiFactorRegistrationsHistory", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "MultiFactorRegistrations",
-                schema: "public",
+                name: "MultiFactorSettings",
+                schema: "configuration",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    MobileNumberToSendCode = table.Column<string>(type: "char(12)", nullable: true),
-                    EmailToSendCode = table.Column<string>(type: "varchar(50)", nullable: true),
-                    CodeToAuthenticate = table.Column<string>(type: "char(6)", nullable: false),
-                    IsAuthenticated = table.Column<bool>(type: "boolean", nullable: false),
+                    Id = table.Column<string>(type: "varchar(30)", unicode: false, maxLength: 30, nullable: false),
+                    Descriptions = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: false),
                     CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
                     ModifiedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
@@ -100,7 +140,7 @@ namespace Qrdentity.Web.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MultiFactorRegistrations", x => x.Id);
+                    table.PrimaryKey("PK_MultiFactorSettings", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -552,12 +592,20 @@ namespace Qrdentity.Web.Data.Migrations
                 schema: "b2b");
 
             migrationBuilder.DropTable(
-                name: "MultiFactorRegistrationHistory",
+                name: "MultiFactorRegistrations",
                 schema: "public");
 
             migrationBuilder.DropTable(
-                name: "MultiFactorRegistrations",
+                name: "MultiFactorRegistrationSettings",
                 schema: "public");
+
+            migrationBuilder.DropTable(
+                name: "MultiFactorRegistrationsHistory",
+                schema: "public");
+
+            migrationBuilder.DropTable(
+                name: "MultiFactorSettings",
+                schema: "configuration");
 
             migrationBuilder.DropTable(
                 name: "OrganizationAddresses",
