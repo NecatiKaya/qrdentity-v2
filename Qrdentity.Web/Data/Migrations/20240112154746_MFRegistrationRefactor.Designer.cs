@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Qrdentity.Web.Data;
@@ -11,9 +12,11 @@ using Qrdentity.Web.Data;
 namespace Qrdentity.Web.Data.Migrations
 {
     [DbContext(typeof(QrdentityContext))]
-    partial class QrdentityContextModelSnapshot : ModelSnapshot
+    [Migration("20240112154746_MFRegistrationRefactor")]
+    partial class MFRegistrationRefactor
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

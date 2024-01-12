@@ -41,9 +41,9 @@ public class QrdentityContext : DbContext
 
     public DbSet<ShoppingCart> ShoppingCarts { get; set; }
 
-    public DbSet<MultiFactorRegistration> MultiFactorRegistrations { get; set; }
+    public DbSet<MultiFactorRegistrationGroup> MultiFactorRegistrationGroups { get; set; }
 
-    public DbSet<MultiFactorRegistrationHistory> MultiFactorRegistrationHistory { get; set; }
+    public DbSet<MultiFactorRegistrationSettingHistory> MultiFactorRegistrationSettingsHistory { get; set; }
 
     public DbSet<MultiFactorSetting> MultiFactorSettings { get; set; }
 

@@ -9,9 +9,17 @@ public sealed class MultiFactorRegistrationSetting : ITrackableEntity
 {
     public Guid Id { get; set; }
 
-    public Guid MultiFactorRegistrationId { get; set; }
+    public Guid MultiFactorRegistrationGroupId { get; set; }
 
-    public string MultiFactorConfigurationId { get; set; } = default!;
+    public string MultiFactorSettingId { get; set; } = default!;
+
+    public string Value { get; set; } = default!;
+
+    public string CodeToAuthenticate { get; set; } = default!;
+
+    public bool IsAuthenticated { get; set; }
+
+    public MultiFactorRegistrationGroup MultiFactorRegistrationGroup { get; set; } = default!;
 
     public DateTimeOffset CreatedDate { get; set; }
 

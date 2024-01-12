@@ -5,16 +5,14 @@ using Qrdentity.Web.Data.MultiFactor.Configuration;
 
 namespace Qrdentity.Web.Data.MultiFactor;
 
-[EntityTypeConfiguration(typeof(MultiFactorRegistrationHistoryConfiguration))]
-public sealed class MultiFactorRegistrationHistory : ITrackableEntity
+[EntityTypeConfiguration(typeof(MultiFactorRegistrationSettingHistoryConfiguration))]
+public sealed class MultiFactorRegistrationSettingHistory : ITrackableEntity
 {
     public Guid Id { get; set; } = Guid.NewGuid();
 
     public Guid UserId { get; set; }
 
-    public string? UsedMobileNumber { get; set; }
-
-    public string? UsedEmail { get; set; }
+    public string MultiFactorSettingId { get; set; } = default!;
 
     public string UserProvidedCode { get; set; } = default!;
 

@@ -4,20 +4,15 @@ using Qrdentity.Web.Data.MultiFactor.Configuration;
 
 namespace Qrdentity.Web.Data.MultiFactor;
 
-[EntityTypeConfiguration(typeof(MultiFactorRegistrationConfiguration))]
-public sealed class MultiFactorRegistration : ITrackableEntity
+[EntityTypeConfiguration(typeof(MultiFactorRegistrationGroupConfiguration))]
+public sealed class MultiFactorRegistrationGroup : ITrackableEntity
 {
     public Guid Id { get; set; } = Guid.NewGuid();
 
     public Guid UserId { get; set; }
-    
-    public string? MobileNumberToSendCode { get; set; }
 
-    public string? EmailToSendCode { get; set; }
-
-    public string CodeToAuthenticate { get; set; } = default!;
-
-    public bool IsAuthenticated { get; set; }
+    public ICollection<MultiFactorRegistrationSetting> MultiFactorRegistrationSettings { get; set; } =
+        new List<MultiFactorRegistrationSetting>();
 
     public DateTimeOffset CreatedDate { get; set; }
 

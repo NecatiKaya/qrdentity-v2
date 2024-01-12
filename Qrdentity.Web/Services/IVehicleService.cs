@@ -1,5 +1,5 @@
 using Qrdentity.Web.Data.MultiFactor;
-using Qrdentity.Web.Proxies.Common.Mobile;
+using Qrdentity.Web.Proxies.Common;
 using Qrdentity.Web.Proxies.Common.Vehicle.PlateNumber;
 using Qrdentity.Web.Proxies.Vehicle;
 
@@ -7,9 +7,11 @@ namespace Qrdentity.Web.Services;
 
 public interface IVehicleService
 {
-    Task<MultiFactorRegistration?> PreRegisterVehicleAsync(Guid userId, MobileNumberRequest? mobileNumber, string? email,
-        PlateNumberRequest plateNumber, CancellationToken cancellationToken = default);
+    Task<MultiFactorRegistrationGroup?> PreRegisterVehicleAsync(Guid userId, PlateNumberRequest plateNumber,
+        List<MultiFactorRegistrationSettingRequestProxy> mfValues,
+        CancellationToken cancellationToken = default);
 
-    Task<VehicleConfirmRegistrationResponse> ConfirmRegistrationVehicleAsync(Guid userId, Guid registrationId, string registrationCode,
+    Task<List<VehicleConfirmRegistrationResponse>> ConfirmRegistrationVehicleAsync(Guid userId, Guid registrationGroupId,
+        List<MultiFactorRegistrationSettingRequestProxy> mfValues,
         CancellationToken cancellationToken = default!);
 }

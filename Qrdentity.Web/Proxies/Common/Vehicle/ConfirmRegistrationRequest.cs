@@ -4,5 +4,6 @@ public sealed class ConfirmRegistrationRequest
 {
     public Guid RegistrationId { get; set; }
 
-    public string Code { get; set; } = default!;
+    public List<MultiFactorRegistrationSettingRequestProxy> MfValues { get; set; } =
+        new List<MultiFactorRegistrationSettingRequestProxy>();
 }

@@ -13,11 +13,21 @@ internal sealed class
         builder.ToTable("MultiFactorRegistrationSettings", DataConstants.PublicSchema);
         builder.HasKey(table => table.Id);
 
-        builder.Property(table => table.MultiFactorRegistrationId)
+        builder.Property(table => table.Value).HasColumnType("varchar(100)").IsRequired().IsUnicode(false);
+        builder.Property(table => table.MultiFactorSettingId)
             .IsRequired()
             .HasMaxLength(30)
             .HasColumnType("varchar(30)")
             .IsUnicode();
+        
+        builder.Property(table => table.CodeToAuthenticate)
+            .IsRequired()
+            .HasMaxLength(6)
+            .HasColumnType("char(6)")
+            .IsUnicode();
+
+        builder.Property(table => table.MultiFactorRegistrationGroupId)
+            .IsRequired();
 
         TrackableEntityConfiguration.Apply(builder);
     }

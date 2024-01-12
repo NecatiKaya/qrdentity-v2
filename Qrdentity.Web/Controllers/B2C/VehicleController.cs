@@ -20,14 +20,15 @@ public sealed class VehicleController : QrdentityControllerBase
         _vehicleService = vehicleService;
         _memoryCache = memoryCache;
     }
-    
+
     [HttpPost]
     [Route("pre-register-vehicle")]
-    public async Task<IActionResult> VehiclePreRegistration([FromBody] PreRegisterVehicleRequest proxy,
+    public async Task<ActionResult<VehiclePreRegistrationResponse>> VehiclePreRegistration([FromBody] PreRegisterVehicleRequest proxy,
         CancellationToken token)
     {
-        MultiFactorRegistration? registration = await _vehicleService.PreRegisterVehicleAsync(DataConstants.AdminUserId,
-            proxy.Mobile, DataConstants.AdminUserEmail, proxy.Plate, token);
+        MultiFactorRegistrationGroup? registration =
+            await _vehicleService.PreRegisterVehicleAsync(DataConstants.AdminUserId, proxy.Plate, proxy.MfValues,
+                token);
 
         if (registration == null)
         {
@@ -44,17 +45,11 @@ public sealed class VehicleController : QrdentityControllerBase
 
     [HttpPost]
     [Route("register-vehicle")]
-    public async Task<IActionResult> VehicleRegistration([FromBody] ConfirmRegistrationRequest proxy,
+    public async Task<ActionResult<List<VehicleConfirmRegistrationResponse>>> VehicleRegistration([FromBody] ConfirmRegistrationRequest proxy,
         CancellationToken cancellationToken)
     {
-        VehicleConfirmRegistrationResponse response = await _vehicleService.ConfirmRegistrationVehicleAsync(
-            DataConstants.AdminUserId, proxy.RegistrationId, proxy.Code, cancellationToken);
-
-        if (response.IsSuccess)
-        {
-            return Ok();
-        }
-
-        return BadRequest();
+        List<VehicleConfirmRegistrationResponse> response = await _vehicleService.ConfirmRegistrationVehicleAsync(
+            DataConstants.AdminUserId, proxy.RegistrationId, proxy.MfValues, cancellationToken);
+        return Ok(response);
     }
 }
