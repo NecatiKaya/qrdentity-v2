@@ -28,11 +28,7 @@ public sealed class VehicleService : IVehicleService
     {
         foreach (MultiFactorRegistrationSettingRequestProxy mfValue in mfValues)
         {
-            if (string.IsNullOrWhiteSpace(mfValue.CodeToAuthenticate))
-            {
-                //TODO
-                throw new Exception("");
-            }
+            mfValue.Validate();
         }
         
         MultiFactorRegistrationGroup registration = new MultiFactorRegistrationGroup
@@ -64,6 +60,11 @@ public sealed class VehicleService : IVehicleService
         Guid registrationGroupId, List<MultiFactorRegistrationSettingRequestProxy> mfValues,
         CancellationToken cancellationToken = default)
     {
+        foreach (MultiFactorRegistrationSettingRequestProxy mfValue in mfValues)
+        {
+            mfValue.Validate();
+        }
+        
         MultiFactorRegistrationGroup? group = await _qrdentityContext.MultiFactorRegistrationGroups
             .Include(multiFactorRegistrationGroup => multiFactorRegistrationGroup.MultiFactorRegistrationSettings)
             .FirstOrDefaultAsync(

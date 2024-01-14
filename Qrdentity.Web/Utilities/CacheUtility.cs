@@ -19,7 +19,7 @@ public static class CacheUtility
     public static bool ExistsVehiclePreRegistration(IMemoryCache cache, Guid userId, string mfCode)
     {
         string key = KeyForVehiclePreRegistration(userId, mfCode);
-        return cache.TryGetValue(key, out string _);
+        return cache.TryGetValue(key, out string? _);
     }
 
     public static string? GetVehiclePreRegistration(IMemoryCache cache, Guid userId, string mfCode)

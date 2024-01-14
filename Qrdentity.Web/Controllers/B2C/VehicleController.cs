@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Memory;
 using Qrdentity.Web.Constants;
 using Qrdentity.Web.Data.MultiFactor;
 using Qrdentity.Web.Proxies.Common.Vehicle;
@@ -13,12 +12,10 @@ namespace Qrdentity.Web.Controllers.B2C;
 public sealed class VehicleController : QrdentityControllerBase
 {
     private readonly IVehicleService _vehicleService;
-    private readonly IMemoryCache _memoryCache;
 
-    public VehicleController(IVehicleService vehicleService, IMemoryCache memoryCache)
+    public VehicleController(IVehicleService vehicleService)
     {
         _vehicleService = vehicleService;
-        _memoryCache = memoryCache;
     }
 
     [HttpPost]
