@@ -12,6 +12,7 @@ builder.Services.AddScoped<IShoppingCartService, ShoppingCartService>();
 builder.Services.AddScoped<IVehicleService, VehicleService>();
 builder.Services.AddScoped<ISettingService, SettingService>();
 builder.Services.AddScoped<ICodeGeneratorService, CodeGeneratorService>();
+builder.Services.AddScoped<ICheckoutService, CheckoutService>();
 
 string? connectionStringFromConfiguration = builder.Configuration.GetConnectionString("Qrdentity");
 //The app will not run if the connection string does not have value. No need to check for nullability as of now

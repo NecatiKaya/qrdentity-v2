@@ -66,16 +66,12 @@ namespace Qrdentity.Web.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "MultiFactorRegistrations",
+                name: "MultiFactorRegistrationGroups",
                 schema: "public",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    MobileNumberToSendCode = table.Column<string>(type: "char(12)", nullable: false),
-                    EmailToSendCode = table.Column<string>(type: "varchar(50)", nullable: false),
-                    CodeToAuthenticate = table.Column<string>(type: "char(6)", nullable: false),
-                    IsAuthenticated = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
                     CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
                     ModifiedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
@@ -84,26 +80,7 @@ namespace Qrdentity.Web.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MultiFactorRegistrations", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "MultiFactorRegistrationSettings",
-                schema: "public",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    MultiFactorRegistrationId = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: false),
-                    MultiFactorConfigurationId = table.Column<string>(type: "text", nullable: false),
-                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
-                    ModifiedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
-                    UpdatedBy = table.Column<Guid>(type: "uuid", nullable: true),
-                    IsActive = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MultiFactorRegistrationSettings", x => x.Id);
+                    table.PrimaryKey("PK_MultiFactorRegistrationGroups", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -113,9 +90,8 @@ namespace Qrdentity.Web.Data.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    UsedMobileNumber = table.Column<string>(type: "char(12)", nullable: true),
-                    UsedEmail = table.Column<string>(type: "varchar(50)", nullable: true),
-                    UserProvidedCode = table.Column<string>(type: "char(6)", nullable: false),
+                    MultiFactorSettingId = table.Column<string>(type: "text", nullable: false),
+                    UserProvidedCode = table.Column<string>(type: "char(6)", unicode: false, nullable: false),
                     CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
                     IsActive = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true)
@@ -163,25 +139,6 @@ namespace Qrdentity.Web.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Products", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ShoppingCarts",
-                schema: "public",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    IsShoppingDone = table.Column<bool>(type: "boolean", nullable: false),
-                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
-                    ModifiedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
-                    UpdatedBy = table.Column<Guid>(type: "uuid", nullable: true),
-                    IsActive = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ShoppingCarts", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -260,17 +217,16 @@ namespace Qrdentity.Web.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ShoppingCartItems",
+                name: "MultiFactorRegistrationSettings",
                 schema: "public",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    ShoppingCartId = table.Column<Guid>(type: "uuid", nullable: false),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    ProductId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Quantity = table.Column<int>(type: "integer", nullable: false),
-                    ListPriceWithoutVatApplied = table.Column<decimal>(type: "numeric", nullable: false),
-                    SalePriceWithoutVatApplied = table.Column<decimal>(type: "numeric", nullable: false),
+                    MultiFactorRegistrationGroupId = table.Column<Guid>(type: "uuid", nullable: false),
+                    MultiFactorSettingId = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: false),
+                    Value = table.Column<string>(type: "varchar(100)", unicode: false, nullable: false),
+                    CodeToAuthenticate = table.Column<string>(type: "char(6)", maxLength: 6, nullable: false),
+                    IsAuthenticated = table.Column<bool>(type: "boolean", nullable: false),
                     CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
                     ModifiedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
@@ -279,19 +235,12 @@ namespace Qrdentity.Web.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ShoppingCartItems", x => x.Id);
+                    table.PrimaryKey("PK_MultiFactorRegistrationSettings", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ShoppingCartItems_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalSchema: "product",
-                        principalTable: "Products",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ShoppingCartItems_ShoppingCarts_ShoppingCartId",
-                        column: x => x.ShoppingCartId,
+                        name: "FK_MultiFactorRegistrationSettings_MultiFactorRegistrationGrou~",
+                        column: x => x.MultiFactorRegistrationGroupId,
                         principalSchema: "public",
-                        principalTable: "ShoppingCarts",
+                        principalTable: "MultiFactorRegistrationGroups",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -482,6 +431,138 @@ namespace Qrdentity.Web.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "UserAddresses",
+                schema: "public",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    DistrictId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Address = table.Column<string>(type: "varchar(250)", nullable: false),
+                    ZipCode = table.Column<string>(type: "varchar(10)", unicode: false, nullable: false),
+                    Longitude = table.Column<double>(type: "double precision", nullable: false),
+                    Latitude = table.Column<double>(type: "double precision", nullable: false),
+                    GoogleMapsLink = table.Column<string>(type: "varchar(500)", nullable: true),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
+                    ModifiedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    UpdatedBy = table.Column<Guid>(type: "uuid", nullable: true),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserAddresses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserAddresses_Districts_DistrictId",
+                        column: x => x.DistrictId,
+                        principalSchema: "utility",
+                        principalTable: "Districts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Orders",
+                schema: "public",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    OrderNumber = table.Column<string>(type: "varchar(15)", unicode: false, nullable: false),
+                    ShoppingCartId = table.Column<Guid>(type: "uuid", nullable: false),
+                    OrderSalePriceWithoutVatApplied = table.Column<decimal>(type: "numeric", nullable: false),
+                    OrderSalePriceWithVatApplied = table.Column<decimal>(type: "numeric", nullable: false),
+                    OrderStatus = table.Column<int>(type: "integer", nullable: false),
+                    BillingAddressId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ShipmentAddressId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
+                    ModifiedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    UpdatedBy = table.Column<Guid>(type: "uuid", nullable: true),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Orders_UserAddresses_BillingAddressId",
+                        column: x => x.BillingAddressId,
+                        principalSchema: "public",
+                        principalTable: "UserAddresses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Orders_UserAddresses_ShipmentAddressId",
+                        column: x => x.ShipmentAddressId,
+                        principalSchema: "public",
+                        principalTable: "UserAddresses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ShoppingCarts",
+                schema: "public",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    IsShoppingDone = table.Column<bool>(type: "boolean", nullable: false),
+                    CartPriceAfterCheckout = table.Column<decimal>(type: "numeric", nullable: false),
+                    OrderId = table.Column<Guid>(type: "uuid", nullable: true),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
+                    ModifiedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    UpdatedBy = table.Column<Guid>(type: "uuid", nullable: true),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ShoppingCarts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ShoppingCarts_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalSchema: "public",
+                        principalTable: "Orders",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ShoppingCartItems",
+                schema: "public",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    ShoppingCartId = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Quantity = table.Column<int>(type: "integer", nullable: false),
+                    ListPriceWithoutVatApplied = table.Column<decimal>(type: "numeric", nullable: false),
+                    SalePriceWithoutVatApplied = table.Column<decimal>(type: "numeric", nullable: false),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
+                    ModifiedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    UpdatedBy = table.Column<Guid>(type: "uuid", nullable: true),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ShoppingCartItems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ShoppingCartItems_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalSchema: "product",
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ShoppingCartItems_ShoppingCarts_ShoppingCartId",
+                        column: x => x.ShoppingCartId,
+                        principalSchema: "public",
+                        principalTable: "ShoppingCarts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_BusinessSubTypes_BusinessTypeId",
                 schema: "b2b",
@@ -535,6 +616,31 @@ namespace Qrdentity.Web.Data.Migrations
                 column: "CityId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_MultiFactorRegistrationSettings_MultiFactorRegistrationGrou~",
+                schema: "public",
+                table: "MultiFactorRegistrationSettings",
+                column: "MultiFactorRegistrationGroupId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_BillingAddressId",
+                schema: "public",
+                table: "Orders",
+                column: "BillingAddressId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_OrderNumber",
+                schema: "public",
+                table: "Orders",
+                column: "OrderNumber",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_ShipmentAddressId",
+                schema: "public",
+                table: "Orders",
+                column: "ShipmentAddressId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_OrganizationAddresses_DistrictId",
                 schema: "b2b",
                 table: "OrganizationAddresses",
@@ -582,6 +688,19 @@ namespace Qrdentity.Web.Data.Migrations
                 schema: "public",
                 table: "ShoppingCartItems",
                 column: "ShoppingCartId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ShoppingCarts_OrderId",
+                schema: "public",
+                table: "ShoppingCarts",
+                column: "OrderId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserAddresses_DistrictId",
+                schema: "public",
+                table: "UserAddresses",
+                column: "DistrictId");
         }
 
         /// <inheritdoc />
@@ -590,10 +709,6 @@ namespace Qrdentity.Web.Data.Migrations
             migrationBuilder.DropTable(
                 name: "Contacts",
                 schema: "b2b");
-
-            migrationBuilder.DropTable(
-                name: "MultiFactorRegistrations",
-                schema: "public");
 
             migrationBuilder.DropTable(
                 name: "MultiFactorRegistrationSettings",
@@ -624,8 +739,8 @@ namespace Qrdentity.Web.Data.Migrations
                 schema: "public");
 
             migrationBuilder.DropTable(
-                name: "Districts",
-                schema: "utility");
+                name: "MultiFactorRegistrationGroups",
+                schema: "public");
 
             migrationBuilder.DropTable(
                 name: "BusinessSubTypes",
@@ -644,15 +759,27 @@ namespace Qrdentity.Web.Data.Migrations
                 schema: "public");
 
             migrationBuilder.DropTable(
-                name: "Cities",
-                schema: "utility");
-
-            migrationBuilder.DropTable(
                 name: "BusinessTypes",
                 schema: "b2b");
 
             migrationBuilder.DropTable(
                 name: "TaxOffices",
+                schema: "utility");
+
+            migrationBuilder.DropTable(
+                name: "Orders",
+                schema: "public");
+
+            migrationBuilder.DropTable(
+                name: "UserAddresses",
+                schema: "public");
+
+            migrationBuilder.DropTable(
+                name: "Districts",
+                schema: "utility");
+
+            migrationBuilder.DropTable(
+                name: "Cities",
                 schema: "utility");
 
             migrationBuilder.DropTable(

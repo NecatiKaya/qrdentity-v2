@@ -13,6 +13,12 @@ public sealed class ShoppingCart : ITrackableEntity
 
     public bool IsShoppingDone { get; set; }
 
+    public decimal CartPriceAfterCheckout { get; set; }
+
+    public Guid? OrderId { get; set; }
+    
+    public Order.Order? Order { get; set; }
+    
     public DateTimeOffset CreatedDate { get; set; }
     public Guid CreatedBy { get; set; }
     public DateTimeOffset? ModifiedDate { get; set; }

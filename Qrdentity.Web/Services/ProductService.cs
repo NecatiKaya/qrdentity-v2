@@ -35,7 +35,7 @@ public sealed class ProductService : IProductService
         await _qrdentityContext.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<List<QrProduct>> ListProducts(GetProductsListRequestProxy proxy,
+    public async Task<List<QrProduct>> ListProductsAsync(GetProductsListRequestProxy proxy,
         CancellationToken cancellationToken = default)
     {
         IOrderedQueryable<QrProduct> query = _qrdentityContext.QrProducts
@@ -52,6 +52,17 @@ public sealed class ProductService : IProductService
         }
 
         List<QrProduct> products = await query.ToListAsync(cancellationToken: cancellationToken);
+        return products;
+    }
+
+    public async Task<List<QrProduct>> ListProductsByIdAsync(Guid[] idList,
+        CancellationToken cancellationToken = default)
+    {
+        List<QrProduct> products = await _qrdentityContext.QrProducts
+            .Where(eachProduct => idList.Contains(eachProduct.Id))
+            .Where(eachProduct => eachProduct.IsActive)
+            .ToListAsync(cancellationToken: cancellationToken);
+
         return products;
     }
 }

@@ -9,6 +9,9 @@ public interface IProductService
 
     Task CreateAsync(QrProduct product, CancellationToken cancellationToken = default);
 
-    Task<List<QrProduct>> ListProducts(GetProductsListRequestProxy proxy,
+    Task<List<QrProduct>> ListProductsAsync(GetProductsListRequestProxy proxy,
+        CancellationToken cancellationToken = default);
+
+    Task<List<QrProduct>> ListProductsByIdAsync(Guid[] idList,
         CancellationToken cancellationToken = default);
 }

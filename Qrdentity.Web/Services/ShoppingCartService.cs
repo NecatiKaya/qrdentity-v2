@@ -133,4 +133,26 @@ public sealed class ShoppingCartService : IShoppingCartService
 
         return cart;
     }
+
+    public async Task<decimal> CalculateCartPriceWithoutVatAppliedAsync(ShoppingCart cart,
+        CancellationToken cancellationToken = default)
+    {
+        Guid[] productsIdList =
+            cart.ShoppingCartItems.Select(eachItem => eachItem.ProductId).ToArray();
+
+        Dictionary<Guid, QrProduct> products =
+            (await _productService.ListProductsByIdAsync(productsIdList.ToArray(), cancellationToken)).ToDictionary(
+                qrProduct => qrProduct.Id, qrProduct => qrProduct);
+
+        decimal sum = cart.ShoppingCartItems.Sum(eachItem =>
+        {
+            if (products.TryGetValue(eachItem.ProductId, out QrProduct? product))
+            {
+                return eachItem.Quantity * product.SalePriceWithoutVatApplied;
+            }
+
+            return 0;
+        });
+        return sum;
+    }
 }

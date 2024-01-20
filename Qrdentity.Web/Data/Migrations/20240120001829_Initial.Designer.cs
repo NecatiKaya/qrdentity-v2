@@ -12,8 +12,8 @@ using Qrdentity.Web.Data;
 namespace Qrdentity.Web.Data.Migrations
 {
     [DbContext(typeof(QrdentityContext))]
-    [Migration("20240112154746_MFRegistrationRefactor")]
-    partial class MFRegistrationRefactor
+    [Migration("20240120001829_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -360,6 +360,9 @@ namespace Qrdentity.Web.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<decimal>("CartPriceAfterCheckout")
+                        .HasColumnType("numeric");
+
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uuid");
 
@@ -377,6 +380,9 @@ namespace Qrdentity.Web.Data.Migrations
                     b.Property<DateTimeOffset?>("ModifiedDate")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<Guid?>("OrderId")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid?>("UpdatedBy")
                         .HasColumnType("uuid");
 
@@ -384,6 +390,9 @@ namespace Qrdentity.Web.Data.Migrations
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OrderId")
+                        .IsUnique();
 
                     b.ToTable("ShoppingCarts", "public");
                 });
@@ -436,6 +445,58 @@ namespace Qrdentity.Web.Data.Migrations
                     b.HasIndex("ShoppingCartId");
 
                     b.ToTable("ShoppingCartItems", "public");
+                });
+
+            modelBuilder.Entity("Qrdentity.Web.Data.Common.UserAddress", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .IsUnicode(true)
+                        .HasColumnType("varchar(250)");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("DistrictId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("GoogleMapsLink")
+                        .HasColumnType("varchar(500)");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true);
+
+                    b.Property<double>("Latitude")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("Longitude")
+                        .HasColumnType("double precision");
+
+                    b.Property<DateTimeOffset?>("ModifiedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ZipCode")
+                        .IsRequired()
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(10)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DistrictId");
+
+                    b.ToTable("UserAddresses", "public");
                 });
 
             modelBuilder.Entity("Qrdentity.Web.Data.MultiFactor.MultiFactorRegistrationGroup", b =>
@@ -517,6 +578,8 @@ namespace Qrdentity.Web.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("MultiFactorRegistrationGroupId");
+
                     b.ToTable("MultiFactorRegistrationSettings", "public");
                 });
 
@@ -587,6 +650,64 @@ namespace Qrdentity.Web.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("MultiFactorSettings", "configuration");
+                });
+
+            modelBuilder.Entity("Qrdentity.Web.Data.Order.Order", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("BillingAddressId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true);
+
+                    b.Property<DateTimeOffset?>("ModifiedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("OrderNumber")
+                        .IsRequired()
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(15)");
+
+                    b.Property<decimal>("OrderSalePriceWithVatApplied")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("OrderSalePriceWithoutVatApplied")
+                        .HasColumnType("numeric");
+
+                    b.Property<int>("OrderStatus")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("ShipmentAddressId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ShoppingCartId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BillingAddressId");
+
+                    b.HasIndex("OrderNumber")
+                        .IsUnique();
+
+                    b.HasIndex("ShipmentAddressId");
+
+                    b.ToTable("Orders", "public");
                 });
 
             modelBuilder.Entity("Qrdentity.Web.Data.Products.QrProduct", b =>
@@ -887,6 +1008,15 @@ namespace Qrdentity.Web.Data.Migrations
                     b.Navigation("Organization");
                 });
 
+            modelBuilder.Entity("Qrdentity.Web.Data.Cart.ShoppingCart", b =>
+                {
+                    b.HasOne("Qrdentity.Web.Data.Order.Order", "Order")
+                        .WithOne("ShoppingCart")
+                        .HasForeignKey("Qrdentity.Web.Data.Cart.ShoppingCart", "OrderId");
+
+                    b.Navigation("Order");
+                });
+
             modelBuilder.Entity("Qrdentity.Web.Data.Cart.ShoppingCartItem", b =>
                 {
                     b.HasOne("Qrdentity.Web.Data.Products.QrProduct", "Product")
@@ -904,6 +1034,47 @@ namespace Qrdentity.Web.Data.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("ShoppingCart");
+                });
+
+            modelBuilder.Entity("Qrdentity.Web.Data.Common.UserAddress", b =>
+                {
+                    b.HasOne("Qrdentity.Web.Data.Utility.District", "District")
+                        .WithMany()
+                        .HasForeignKey("DistrictId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("District");
+                });
+
+            modelBuilder.Entity("Qrdentity.Web.Data.MultiFactor.MultiFactorRegistrationSetting", b =>
+                {
+                    b.HasOne("Qrdentity.Web.Data.MultiFactor.MultiFactorRegistrationGroup", "MultiFactorRegistrationGroup")
+                        .WithMany("MultiFactorRegistrationSettings")
+                        .HasForeignKey("MultiFactorRegistrationGroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MultiFactorRegistrationGroup");
+                });
+
+            modelBuilder.Entity("Qrdentity.Web.Data.Order.Order", b =>
+                {
+                    b.HasOne("Qrdentity.Web.Data.Common.UserAddress", "BillingAddress")
+                        .WithMany()
+                        .HasForeignKey("BillingAddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Qrdentity.Web.Data.Common.UserAddress", "ShipmentAddress")
+                        .WithMany()
+                        .HasForeignKey("ShipmentAddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BillingAddress");
+
+                    b.Navigation("ShipmentAddress");
                 });
 
             modelBuilder.Entity("Qrdentity.Web.Data.Utility.City", b =>
@@ -948,6 +1119,17 @@ namespace Qrdentity.Web.Data.Migrations
             modelBuilder.Entity("Qrdentity.Web.Data.Cart.ShoppingCart", b =>
                 {
                     b.Navigation("ShoppingCartItems");
+                });
+
+            modelBuilder.Entity("Qrdentity.Web.Data.MultiFactor.MultiFactorRegistrationGroup", b =>
+                {
+                    b.Navigation("MultiFactorRegistrationSettings");
+                });
+
+            modelBuilder.Entity("Qrdentity.Web.Data.Order.Order", b =>
+                {
+                    b.Navigation("ShoppingCart")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Qrdentity.Web.Data.Products.QrProduct", b =>

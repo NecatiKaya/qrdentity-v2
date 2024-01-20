@@ -5,6 +5,7 @@ using Qrdentity.Web.Core.Converters;
 using Qrdentity.Web.Core.Data;
 using Qrdentity.Web.Data.B2B;
 using Qrdentity.Web.Data.Cart;
+using Qrdentity.Web.Data.Common;
 using Qrdentity.Web.Data.MultiFactor;
 using Qrdentity.Web.Data.Products;
 using Qrdentity.Web.Data.Utility;
@@ -46,6 +47,10 @@ public class QrdentityContext : DbContext
     public DbSet<MultiFactorRegistrationSettingHistory> MultiFactorRegistrationSettingsHistory { get; set; }
 
     public DbSet<MultiFactorSetting> MultiFactorSettings { get; set; }
+
+    public DbSet<Order.Order> Orders { get; set; }
+
+    public DbSet<UserAddress> UserAddresses { get; set; }
 
     public DbSet<MultiFactorRegistrationSetting> MultiFactorRegistrationSettings { get; set; }
 

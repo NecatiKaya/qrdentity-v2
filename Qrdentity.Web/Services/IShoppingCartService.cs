@@ -13,6 +13,9 @@ public interface IShoppingCartService
         CancellationToken cancellationToken = default);
 
     Task DeleteShoppingCartAsync(Guid basketOwnerId, CancellationToken cancellationToken = default);
+    
+    Task<ShoppingCart?> GetShoppingCartByIdAsync(Guid userId, Guid cartId,
+        CancellationToken cancellationToken = default);
 
-    Task<ShoppingCart?> GetShoppingCartByIdAsync(Guid userId, Guid cartId, CancellationToken cancellationToken = default);
+    Task<decimal> CalculateCartPriceWithoutVatAppliedAsync(ShoppingCart cart, CancellationToken cancellationToken = default);
 }
