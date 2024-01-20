@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Qrdentity.Web.Constants;
 using Qrdentity.Web.Proxies.Checkout;
 using Qrdentity.Web.Services;
 
@@ -16,10 +17,12 @@ public sealed class CheckoutController : QrdentityControllerBase
     }
 
     [HttpPost("{shoppingCartId:guid}")]
-    public async Task<IActionResult> Complete([FromRoute] Guid shoppingCartId, [FromBody]CompleteCheckoutRequestProxy proxy,
+    public async Task<IActionResult> Complete([FromRoute] Guid shoppingCartId,
+        [FromBody] CompleteCheckoutRequestProxy proxy,
         CancellationToken cancellationToken)
     {
-        await _checkoutService.Complete(shoppingCartId, proxy, cancellationToken);
+        Guid userId = DataConstants.AdminUserId;
+        await _checkoutService.Complete(userId, shoppingCartId, proxy, cancellationToken);
         return Ok();
     }
 }

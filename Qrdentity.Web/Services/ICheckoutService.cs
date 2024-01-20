@@ -4,6 +4,6 @@ namespace Qrdentity.Web.Services;
 
 public interface ICheckoutService
 {
-    Task Complete(Guid shoppingCartId, CompleteCheckoutRequestProxy proxy,
+    Task Complete(Guid userId, Guid shoppingCartId, CompleteCheckoutRequestProxy proxy,
         CancellationToken cancellationToken = default);
 }

@@ -1,4 +1,3 @@
-using Qrdentity.Web.Constants;
 using Qrdentity.Web.Data;
 using Qrdentity.Web.Data.Cart;
 using Qrdentity.Web.Data.Order;
@@ -11,19 +10,24 @@ public sealed class CheckoutService : ICheckoutService
 {
     private readonly QrdentityContext _qrdentityContext;
     private readonly IShoppingCartService _shoppingCartService;
+    private readonly IUserAddressService _userAddressService;
 
-    public CheckoutService(QrdentityContext qrdentityContext, IShoppingCartService shoppingCartService)
+    public CheckoutService(QrdentityContext qrdentityContext, IShoppingCartService shoppingCartService,
+        IUserAddressService userAddressService)
     {
         _qrdentityContext = qrdentityContext;
         _shoppingCartService = shoppingCartService;
+        _userAddressService = userAddressService;
     }
 
-    public async Task Complete(Guid shoppingCartId, CompleteCheckoutRequestProxy proxy,
+    public async Task Complete(Guid userId, Guid shoppingCartId, CompleteCheckoutRequestProxy proxy,
         CancellationToken cancellationToken = default)
     {
-        Guid adminUser = DataConstants.AdminUserId;
+        await _userAddressService.ValidateUserAddressAsync(userId,
+            [proxy.BillingAddressId, proxy.ShipmentAddressId], cancellationToken);
+
         ShoppingCart? userCart =
-            await _shoppingCartService.GetShoppingCartByIdAsync(adminUser, shoppingCartId, cancellationToken);
+            await _shoppingCartService.GetShoppingCartByIdAsync(userId, shoppingCartId, cancellationToken);
 
         if (userCart == null || userCart.IsShoppingDone || !userCart.IsActive)
         {
