@@ -2,6 +2,10 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qrdentity.Web", "Qrdentity.Web\Qrdentity.Web.csproj", "{C705458A-F2C8-43D8-93C8-F0377245DC80}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qrdentity.AuthServer.Client", "Qrdentity.AuthServer.Client\Qrdentity.AuthServer.Client.csproj", "{5834E291-639C-4C3B-BDE7-7022147A3C52}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qrdentity.Auth", "Qrdentity.Auth\Qrdentity.Auth.csproj", "{61449A32-DE08-4A70-A9B9-1CFC5C57EAF3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +16,13 @@ Global
 		{C705458A-F2C8-43D8-93C8-F0377245DC80}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C705458A-F2C8-43D8-93C8-F0377245DC80}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C705458A-F2C8-43D8-93C8-F0377245DC80}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5834E291-639C-4C3B-BDE7-7022147A3C52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5834E291-639C-4C3B-BDE7-7022147A3C52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5834E291-639C-4C3B-BDE7-7022147A3C52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5834E291-639C-4C3B-BDE7-7022147A3C52}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61449A32-DE08-4A70-A9B9-1CFC5C57EAF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61449A32-DE08-4A70-A9B9-1CFC5C57EAF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61449A32-DE08-4A70-A9B9-1CFC5C57EAF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61449A32-DE08-4A70-A9B9-1CFC5C57EAF3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
